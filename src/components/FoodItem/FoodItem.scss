@@ -1,0 +1,29 @@
+a.food_item_box {
+    
+    transition: .5s;
+    color:#292929;
+   &:hover{
+       text-decoration: none;
+       
+   }
+    .item_box {
+        padding: 10px;
+        box-sizing: border-box;
+        display: block;
+        text-align: center;
+        &:hover{
+            box-shadow: 1px 3px 10px #000;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .item_pic {
+            width: 200px;
+            margin: 0 auto;
+            height: 200px;
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}

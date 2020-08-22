@@ -1,0 +1,27 @@
+nav.food_tab {
+    ul {
+        margin: 0;
+        padding: 0;
+        li {
+            list-style: none;
+            .nav-link {
+                cursor: pointer;
+            }
+            .active.nav-link {
+                color: red;
+                position: relative;
+                font-weight: 600;
+                &::before{
+                    position: absolute;
+                    content: '';
+                    width: 60%;
+                    height: 2px;
+                    background-color: red;
+                    left: 50%;
+                    bottom: 0;
+                    transform: translateX(-50%);
+                }
+            }
+        }
+    }
+}

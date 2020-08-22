@@ -1,0 +1,28 @@
+.banner_area{
+    background-image: url('../../assets/Images/bannerbackground.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 80vh;
+}
+.search-box {
+    position: relative;
+}
+.banner_box{
+    height: 80vh;
+}
+.search-btn {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    height: 100%;
+}
+
+.banner_area .form-control {
+    border-radius: 25px;
+    border: none;
+    padding-left: 20px;
+}
+.search-box button {
+    border-radius: 25px;
+}

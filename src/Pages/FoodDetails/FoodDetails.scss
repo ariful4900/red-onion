@@ -1,0 +1,36 @@
+.small-img {
+    height: 150px;
+    width: 150px;
+}
+
+.more_image {
+    display: flex;
+}
+.more_image img {
+    border: 1px solid #ddd;
+}
+.price_control {
+    border: 1px solid gray;
+    border-radius: 30px;
+    margin-left: 20px;
+    
+    input[type="submit"] {
+        border: none;
+        background: none;
+    }
+    input,
+    button {
+        line-height: 30px;
+    }
+}
+.price_box.d-flex {
+    margin: 10px 0;
+}
+.cartBtn .btn {
+    border-radius: 30px;
+}
+
+.cartBtn {
+    margin: 20px 0;
+}
+

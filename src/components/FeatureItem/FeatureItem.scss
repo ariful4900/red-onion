@@ -1,0 +1,18 @@
+.feature_content {
+    padding: 10px;
+    img {
+        width: 40px;
+        margin-right: 10px;
+    }
+    span.show_btn svg {
+        color: green;
+    }
+
+}
+
+.item_box {
+    border-radius: 5px;
+    &:hover {
+        box-shadow: 0 5px 10px #ddd;
+    }
+}
