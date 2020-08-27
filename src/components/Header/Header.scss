@@ -1,9 +1,14 @@
 .header_area {
     position: sticky;
-    top:0;
-    border:1px solid #ddd;
+    top: 0;
+    border: 1px solid #ddd;
     z-index: 5;
     img {
         width: 200px;
+    }
+    .userName.nav-item a {
+        color: #dc3545 !important;
+        font-weight: 500;
+        font-family: eras itc;
     }
 }

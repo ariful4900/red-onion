@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import foods from '../Data/foods';
 import feature from '../Data/fetures'
-import { addToDatabaseCart, getDatabaseCart } from '../utilities/databaseManager';
+import { addToDatabaseCart, getDatabaseCart, removeFromDatabaseCart, processOrder } from '../utilities/databaseManager';
 import {
     Route,
     Redirect,
@@ -16,7 +16,7 @@ const ProviderContext = createContext();
 
 export const ContextProvider = (props) => {
     const cartItem = CartInfo();
-    const auth = Auth()
+    const auth = Auth();
     return <ProviderContext.Provider value={{ cartItem, auth }}>{props.children}</ProviderContext.Provider>
 }
 
@@ -29,6 +29,22 @@ export const useProvider = () => {
 export const CartInfo = () => {
     const [food, setFood] = useState([]);
     const [cart, setCart] = useState([]);
+    const [deliveryDetails, setDeliveryDetails]= useState({
+        name:null,
+        email:null,
+        house:null,
+        village:null,
+        city:null,
+        zipCode:null
+    });
+    const [userEmail, setUserEmail]= useState(null);
+    const [ orderId, setOrderId] = useState(null)
+    const deliveryDetailsHandler = (data)=>{
+        setDeliveryDetails(data);
+    };
+    const getUserEmail = (email)=>{
+       setUserEmail(email)
+    };
     useEffect(() => {
         // fetch('http://localhost:4200/products')
         //     .then(res => res.json())
@@ -42,41 +58,75 @@ export const CartInfo = () => {
         const productKeys = Object.keys(savedCart);
 
         if (food.length) {
-            const priviousCart = productKeys.map(existingKey => {
-                const product = food.find(pd => pd.key === existingKey);
+            const previousCart = productKeys.map(existingKey => {
+                let product = food.find(pd => pd.key === existingKey);
 
                 product.quantity = savedCart[existingKey];
+                // product = savedCart[existingKey];
                 return product;
             })
-            setCart(priviousCart);
+            setCart(previousCart);
         }
     }, [food]);
 
-    const handleAddFood = (product) => {
+    const handleAddFood = (currentFood) => {
 
 
-        const toBeAddedKey = product.key;
-        const sameProduct = cart.find(pd => pd.key === toBeAddedKey);
-        let count = 1;
-        let newCart;
-        if (sameProduct) {
-            count = sameProduct.quantity + 1;
-            sameProduct.quantity = count;
-            const others = cart.filter(pd => pd.key !== toBeAddedKey);
-            newCart = [...others, sameProduct];
+        // const toBeAddedKey = product.key;
+        const alreadyAdded = cart.find(pd => pd.key === currentFood.key);
+        let newCart = [...cart, currentFood];
+            setCart(newCart)
+        if (alreadyAdded) {
+
+            const remainingCart = cart.filter(pd => pd.key !== currentFood.key);
+            newCart = [...cart, remainingCart];
         } else {
-            product.quantity = 1;
-            newCart = [...cart, product];
+            newCart = [...cart, currentFood];
         }
 
-        setCart(newCart);
-        addToDatabaseCart(product.key, count);
+        addToDatabaseCart(currentFood.key, currentFood.quantity);
     }
+    const checkoutHandler = (productId, productQuantity)=>{
+        const newCart = cart.map(item=>{
+            if(item.key === productId){
+                item.quantity = productQuantity
+            }
+            return item
+        })
+        const filterCart = newCart.filter(item=>item.quantity>0)
+        setCart(filterCart)
+     }
+     const clearCart =  (cart) => {
+        //  const newCart = cart.filter(fd=>fd.key !==foodKey);
+        // setCart(newCart);
+        // removeFromDatabaseCart(foodKey)
+        const orderedItems = cart.map(item => {
+          return {food_id : item.key, quantity: item.quantity};
 
+        })
+
+        const orderDetailsData = {
+            userEmail,
+            orderedItems,
+            deliveryDetails
+            
+        }
+        setOrderId(cart.key);
+        processOrder();
+
+        setCart([])
+  
+    }
     return {
         cart,
         setCart,
         handleAddFood,
+        checkoutHandler,
+        getUserEmail,
+        deliveryDetails,
+        userEmail,
+        deliveryDetailsHandler,
+        clearCart,
         food,
         feature
     }
@@ -84,7 +134,7 @@ export const CartInfo = () => {
 export const  PrivateRoute = ({ children, ...rest }) => {
     const provide = useProvider();
     const {auth}= provide;
-    console.log(auth)
+    // console.log(auth)
     return (
       <Route
         {...rest}
@@ -103,6 +153,8 @@ export const  PrivateRoute = ({ children, ...rest }) => {
       />
     );
   }
+  //Delivery  Info
+
 //All auth Data
 const Auth = () => {
     const [user, setUser] = useState(null);

@@ -4,30 +4,40 @@ import { useProvider } from '../../assets/Provider/ProviderAPI';
 import { Container, Row, Col, Image } from 'react-bootstrap';
 import { FaCartPlus } from "react-icons/fa";
 import './FoodDetails.scss'
+import Preloader from '../../components/Preloader/Preloader';
 
 const FoodDetails = () => {
     const { slug } = useParams();
     const {  cartItem } = useProvider();
     console.log(cartItem)
     const { handleAddFood ,food} = cartItem;
-
+   
     
     const [currentFood, setCurrentFood] = useState({});
     const [quantity, setQuantity] = useState(1)
+    const [preLoader, setPreLoader]=useState("block");
     const [isSuccess, setIsSuccess] = useState(false)
-    const [selectedBigImg, setSelectedBigImg] = useState(null)
-
+    const [selectedBigImg, setSelectedBigImg] = useState(null);
     const { name, fullDescription, price, images } = currentFood;
+    
     useEffect(() => {
         const singleFood = food.find(fd => fd.key === slug);
         setCurrentFood(singleFood);
         if (currentFood.images) {
             setSelectedBigImg(currentFood.images[0])
+            setPreLoader("none");
         }
-    }, [])
-    
-    console.log(food)
+    }, [currentFood])
 
+  
+    
+
+    
+    const quantityAddHandler=(currentFood)=>{
+        currentFood.quantity = quantity;
+        handleAddFood(currentFood);
+        setIsSuccess(true)
+    }
   
     const floatNumber = (num) => {
         const precision = num.toFixed(2);
@@ -48,6 +58,8 @@ const FoodDetails = () => {
         <main>
             <section className="my-4">
                 <Container>
+                    <Preloader visibility={preLoader}></Preloader>
+
                     {
                         name &&
                         <Row>
@@ -64,9 +76,9 @@ const FoodDetails = () => {
                                         </div>
                                     </div>
                                     <div className="cartBtn">
-                                        <button className="btn btn-danger " onClick={() => handleAddFood(currentFood)}><FaCartPlus/> Add</button>
+                                        <button className="btn btn-danger " onClick={() => quantityAddHandler(currentFood)}><FaCartPlus/> Add</button>
                                         {
-                                            isSuccess&& <p className="ml-3 success-msg text-success">Item added to cart</p>
+                                            isSuccess && <p className="ml-3 success-msg text-success">Item added to cart</p>
                                         }
                                     </div>
                                     <div className="more_image">

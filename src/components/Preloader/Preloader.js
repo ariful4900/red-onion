@@ -1,9 +1,9 @@
 import React from 'react';
 import {loader} from '../../assets/Images/ICON/preloader.gif'
 
-const Preloader = () => {
+const Preloader = (props) => {
     return (
-        <div className="text-center col-12 py-5 my-5" >
+        <div className="text-center col-12 py-5 my-5" style={{display: props.visibility}} >
             <img src={loader} alt=""/>
         </div>
     );

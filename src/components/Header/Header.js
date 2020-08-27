@@ -13,17 +13,14 @@ const Header = () => {
         <div className="header_area">
             <Navbar bg="light" expand="lg">
                 <Container>
-                    <Navbar.Brand href="/" className="logo">
+                    <Navbar.Brand href="/" className="logo" >
                         <img src={logo} alt="LOGO" />
                     </Navbar.Brand>
-                    <Nav
-                        activeKey="/home"
-                        onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
-                    >
+                    <Nav>
                         <Nav.Item>
-                            <Nav.Link href="/home"><FaCartPlus /> {cart.length}</Nav.Link>
+                            <Nav.Link href="/checkout"><FaCartPlus /> {cart.length}</Nav.Link>
                         </Nav.Item>
-                        <Nav.Item>
+                        <Nav.Item className="userName">
                             {
                                 auth.user?
                                 <Nav.Link href="/checkout">{auth.user.displayName}</Nav.Link>

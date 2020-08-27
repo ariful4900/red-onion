@@ -4,15 +4,17 @@ import { Container, Row, Col } from 'react-bootstrap';
 import FoodItem from '../FoodItem/FoodItem';
 import './Foods.scss';
 import { Link } from 'react-router-dom';
+import Preloader from '../Preloader/Preloader';
 
 const Foods = () => {
     const { cartItem } = useProvider();
     const { cart, food } = cartItem;
     const [foods, setFoods] = useState([]);
     const [selectFoodType, setSelectFoodType] = useState("Lunch");
+    const [preLoader, setPreLoader]=useState("block")
     useEffect(() => {
         setFoods(food);
-
+        setPreLoader("none");
 
     }, [foods]);
     const selectedFoods = foods.filter(fd => fd.type === selectFoodType);
@@ -33,8 +35,9 @@ const Foods = () => {
                     </ul>
                 </nav>
                 <Row>
+                    <Preloader visibility={preLoader}></Preloader>
                     {
-                        selectedFoods.map(food => <Col md={4} ><FoodItem key={food.id} food={food}></FoodItem></Col>)
+                        selectedFoods.map(food => <Col md={4} key={food.key} ><FoodItem  food={food}></FoodItem></Col>)
                     }
                 </Row>
                 <div className="text-center">

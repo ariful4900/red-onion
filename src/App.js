@@ -13,6 +13,7 @@ import Home from './Pages/Home/Home';
 import FoodDetails from './Pages/FoodDetails/FoodDetails';
 import Checkout from './Pages/Checkout/Checkout';
 import Login from './Pages/Login/Login';
+import NotFound from './Pages/NotFound/NotFound';
 
 function App() {
 
@@ -31,8 +32,11 @@ function App() {
           <PrivateRoute path="/checkout">
             <Checkout></Checkout>
           </PrivateRoute>
-          <Route path="/">
+          <Route exact path="/">
             <Home></Home>
+          </Route>
+          <Route path="*">
+            <NotFound></NotFound>
           </Route>
         </Switch>
         <Footer></Footer>
